@@ -1,0 +1,36 @@
+TAREA 4 - BIG DATA (202016911) - UNAD
+Caso de uso: Accesos fijos a Internet en Antioquia (MinTIC, 2026 - 2.º trimestre)
+Autor: Johan Sebastian Lopera Morales
+
+DATOS (carpeta datos/) - Fuente: Portal de Datos Abiertos de Colombia (MinTIC)
+1) accesos_internet_fijo_antioquia_2026T2.csv  (31.006 filas)
+   Conjunto: "Accesos Fijos a Internet por Proveedor, Departamento, Municipio, Tecnología, Segmento y ancho de banda"
+   Página: https://www.datos.gov.co/d/hwrp-3su3
+   Descarga filtrada (Antioquia, 2026-T2):
+   https://www.datos.gov.co/resource/hwrp-3su3.csv?$where=anno='2026' AND trimestre='2' AND departamento='ANTIOQUIA'&$limit=50000
+
+2) municipios_antioquia_2026T2.csv  (125 filas)
+   Conjunto: "Accesos Fijos a Internet por Departamento, Municipio y población"
+   Página: https://www.datos.gov.co/d/tvzi-ba2g
+   Descarga filtrada:
+   https://www.datos.gov.co/resource/tvzi-ba2g.csv?$where=anno='2026' AND trimestre='2' AND departamento='ANTIOQUIA'&$limit=500
+
+3) proveedores_internet_fijo_2026T2.csv  (1.412 filas)
+   Conjunto: "Accesos Fijos a Internet por proveedor"
+   Página: https://www.datos.gov.co/d/98dx-ah33
+   Descarga filtrada:
+   https://www.datos.gov.co/resource/98dx-ah33.csv?$where=anno='2026' AND trimestre='2'&$limit=5000
+
+PASOS EN MONGODB COMPASS
+1. Add new connection -> URI: mongodb://localhost:27017 -> Save & Connect.
+2. Crear base de datos "internet_fijo_antioquia" con la colección "raw_accesos".
+3. En cada colección: ADD DATA -> Import JSON or CSV file -> elegir el CSV -> Import.
+     raw_accesos     <- accesos_internet_fijo_antioquia_2026T2.csv
+     raw_municipios  <- municipios_antioquia_2026T2.csv
+     raw_proveedores <- proveedores_internet_fijo_2026T2.csv
+4. Abrir el shell (_MONGOSH, parte inferior de Compass) y pegar/ejecutar en orden:
+     scripts/01_modelado.js       (crea municipios, proveedores y accesos + índices)
+     scripts/02_crud.js           (inserción, selección, actualización, eliminación)
+     scripts/03_filtros_join.js   (filtros, operadores y $lookup)
+     scripts/04_agregaciones.js   (contar, sumar, promediar, $bucket)
+   Recomendación: ejecutar cada consulta por separado y tomar pantallazo del código y del resultado.
